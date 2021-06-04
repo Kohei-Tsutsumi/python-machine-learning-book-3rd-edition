@@ -89,8 +89,7 @@ from sklearn.decomposition import KernelPCA
 
 
 
-df_wine = pd.read_csv('https://archive.ics.uci.edu/ml/'
-                      'machine-learning-databases/wine/wine.data',
+df_wine = pd.read_csv('wine.data',
                       header=None)
 
 # if the Wine dataset is temporarily unavailable from the
@@ -116,7 +115,7 @@ df_wine.head()
 
 X, y = df_wine.iloc[:, 1:].values, df_wine.iloc[:, 0].values
 
-X_train, X_test, y_train, y_test =     train_test_split(X, y, test_size=0.3, 
+X_train, X_test, y_train, y_test =     train_test_split(X, y, test_size=0.3,
                      stratify=y,
                      random_state=0)
 
@@ -237,6 +236,17 @@ w = np.hstack((eigen_pairs[0][1][:, np.newaxis],
                eigen_pairs[1][1][:, np.newaxis]))
 print('Matrix W:\n', w)
 
+
+# ### メモ
+
+# `np.newaxis`は新しい軸を生成する定数だそう。`eigen_pairs[0][1]`のまま`np.hstack`すると1行26列のベクトルになってしまうので注意。
+
+
+
+eigen_pairs[0][1][:, np.newaxis]
+
+
+# </br>
 
 # **Note**
 # Depending on which version of NumPy and LAPACK you are using, you may obtain the Matrix W with its signs flipped. Please note that this is not an issue: If $v$ is an eigenvector of a matrix $\Sigma$, we have
