@@ -440,11 +440,11 @@ def load_and_preprocess(path, label):
     image = tf.io.read_file(path)
     image = tf.image.decode_jpeg(image, channels=3)
     image = tf.image.resize(image, [img_height, img_width])
-    image /= 255.0
+    image /= 255.0 # resizeする時に、サンプリングの関係で成分がfloatになってしまう。そのため、0~1の間に収めてimshowに渡すために255で割っているようだ。かなり雑な理解。
 
     return image, label
 
-img_width, img_height = 120, 80
+img_width, img_height = 120, 80 # これ、なんで関数の引数にしないのかな？もしかしたら、mapに渡した関数には引数がpathとlabelの二つしか自動的に渡されないのかもしれない。そんな気がしてきた。
 
 ds_images_labels = ds_files_labels.map(load_and_preprocess)
 
@@ -466,6 +466,7 @@ plt.show()
 
 
 
+conda install tensorflow-datasets
 
 
 
@@ -526,7 +527,7 @@ print(example.keys())
 
 
 ds_train = ds_train.map(lambda item: 
-     (item['image'], tf.cast(item['attributes']['Male'], tf.int32)))
+     (item['image'], tf.cast(item['attributes']['Male'], tf.int32))) # MaleにはTrue or Falseがvalueとして記録されているが、castで0 or 1に変換しているはず。
 
 
 
